@@ -45,7 +45,7 @@ const TicTacToe = () => {
     const result = checkWinner(newBoard)
     if (result) {
       setGameOver(true)
-      setWinner(result)
+      setWinner(result as any)
       if (result !== "draw") {
         triggerConfetti()
       }
