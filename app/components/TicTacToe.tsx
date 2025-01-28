@@ -3,7 +3,13 @@
 import { useState, useEffect } from "react"
 import Board from "./Board"
 import { checkWinner, getNextMove } from "../utils/gameLogic"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import confetti from "canvas-confetti"
 
@@ -86,7 +92,7 @@ const TicTacToe = () => {
           colors: ["#ff0000", "#ffa500", "#ffff00", "#008000", "#0000ff", "#4b0082", "#ee82ee"],
           emojis: ["🧧", "🐍", "🎊", "✨"],
           scalar: randomInRange(0.4, 1),
-        }),
+        })
       )
 
       confetti(
@@ -96,27 +102,27 @@ const TicTacToe = () => {
           colors: ["#ff0000", "#ffa500", "#ffff00", "#008000", "#0000ff", "#4b0082", "#ee82ee"],
           emojis: ["🧧", "🐍", "🎊", "✨"],
           scalar: randomInRange(0.4, 1),
-        }),
+        })
       )
     }, 250)
   }
 
   return (
-    <div className="flex flex-col items-center bg-yellow-50/90 p-8 rounded-2xl shadow-lg backdrop-blur-sm">
+    <div className="flex flex-col items-center rounded-2xl bg-yellow-50/90 p-8 shadow-lg backdrop-blur-sm">
       <div className="mb-6 flex items-center gap-4">
-        <Label htmlFor="difficulty" className="text-red-800 font-bold">
+        <Label htmlFor="difficulty" className="font-bold text-red-800">
           難度選擇：
         </Label>
         <Select value={difficulty} onValueChange={(value: Difficulty) => setDifficulty(value)}>
-          <SelectTrigger className="w-[180px] bg-red-700 text-yellow-50 border-none rounded-xl">
+          <SelectTrigger className="w-[180px] rounded-xl border-none bg-red-700 text-yellow-50">
             <SelectValue placeholder="選擇難度" />
           </SelectTrigger>
-          <SelectContent className="bg-yellow-50 border-yellow-50 rounded-xl overflow-hidden">
+          <SelectContent className="overflow-hidden rounded-xl border-yellow-50 bg-yellow-50">
             {Object.entries(difficultyText).map(([key, text]) => (
-              <SelectItem 
-                key={key} 
+              <SelectItem
+                key={key}
                 value={key}
-                className="hover:bg-red-100 focus:bg-red-100 cursor-pointer"
+                className="cursor-pointer hover:bg-red-100 focus:bg-red-100"
               >
                 {difficultyEmoji[key as Difficulty]} {text}
               </SelectItem>
@@ -129,12 +135,14 @@ const TicTacToe = () => {
 
       {gameOver && (
         <div className="mt-4 text-2xl font-bold text-red-800">
-          {winner === "draw" ? "平局！再來一局吧！" : `${winner === "X" ? "🧧" : "🐍"} 贏了！恭喜！`}
+          {winner === "draw"
+            ? "平局！再來一局吧！"
+            : `${winner === "X" ? "🧧" : "🐍"} 贏了！恭喜！`}
         </div>
       )}
 
       <button
-        className="mt-4 bg-red-700 px-6 py-2 font-bold text-yellow-50 hover:bg-red-800 transition-colors duration-300 shadow-md rounded-xl"
+        className="mt-4 rounded-xl bg-red-700 px-6 py-2 font-bold text-yellow-50 shadow-md transition-colors duration-300 hover:bg-red-800"
         onClick={resetGame}
       >
         開始新遊戲 🎊
@@ -144,4 +152,3 @@ const TicTacToe = () => {
 }
 
 export default TicTacToe
-

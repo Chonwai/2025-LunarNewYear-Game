@@ -108,4 +108,3 @@ export const getNextMove = (board: (string | null)[], difficulty: string): numbe
       return getRandomMove(board)
   }
 }
-

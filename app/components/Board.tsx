@@ -7,7 +7,7 @@ interface BoardProps {
 
 const Board: React.FC<BoardProps> = ({ board, onClick }) => {
   return (
-    <div className="grid grid-cols-3 gap-3 bg-yellow-100/50 p-3 rounded-2xl shadow-lg backdrop-blur-sm">
+    <div className="grid grid-cols-3 gap-3 rounded-2xl bg-yellow-100/50 p-3 shadow-lg backdrop-blur-sm">
       {board.map((value, index) => (
         <Cell key={index} value={value} onClick={() => onClick(index)} />
       ))}
@@ -16,4 +16,3 @@ const Board: React.FC<BoardProps> = ({ board, onClick }) => {
 }
 
 export default Board
-
