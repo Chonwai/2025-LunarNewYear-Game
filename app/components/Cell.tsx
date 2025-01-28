@@ -17,4 +17,3 @@ const Cell: React.FC<CellProps> = ({ value, onClick }) => {
 }
 
 export default Cell
-
