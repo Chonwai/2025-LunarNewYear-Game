@@ -102,16 +102,16 @@ const TicTacToe = () => {
   }
 
   return (
-    <div className="flex flex-col items-center bg-yellow-50/90 p-8 rounded-lg shadow-lg backdrop-blur-sm">
+    <div className="flex flex-col items-center bg-yellow-50/90 p-8 rounded-2xl shadow-lg backdrop-blur-sm">
       <div className="mb-6 flex items-center gap-4">
         <Label htmlFor="difficulty" className="text-red-800 font-bold">
           難度選擇：
         </Label>
         <Select value={difficulty} onValueChange={(value: Difficulty) => setDifficulty(value)}>
-          <SelectTrigger className="w-[180px] bg-red-700 text-yellow-50 border-none">
+          <SelectTrigger className="w-[180px] bg-red-700 text-yellow-50 border-none rounded-xl">
             <SelectValue placeholder="選擇難度" />
           </SelectTrigger>
-          <SelectContent className="bg-yellow-50 border-yellow-50">
+          <SelectContent className="bg-yellow-50 border-yellow-50 rounded-xl overflow-hidden">
             {Object.entries(difficultyText).map(([key, text]) => (
               <SelectItem 
                 key={key} 
@@ -134,7 +134,7 @@ const TicTacToe = () => {
       )}
 
       <button
-        className="mt-4 bg-red-700 px-6 py-2 font-bold text-yellow-50 hover:bg-red-800 transition-colors duration-300 shadow-md rounded-lg"
+        className="mt-4 bg-red-700 px-6 py-2 font-bold text-yellow-50 hover:bg-red-800 transition-colors duration-300 shadow-md rounded-xl"
         onClick={resetGame}
       >
         開始新遊戲 🎊
