@@ -74,10 +74,6 @@ yarn dev
 └── package.json             # 項目配置
 ```
 
-## 📄 授權
-
-MIT License - 查看 [LICENSE](LICENSE) 文件了解更多詳情
-
 ## 👨‍💻 作者
 
 Edison Un - [GitHub](https://github.com/Chonwai)
