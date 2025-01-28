@@ -111,9 +111,13 @@ const TicTacToe = () => {
           <SelectTrigger className="w-[180px] bg-red-700 text-yellow-50 border-none">
             <SelectValue placeholder="選擇難度" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-yellow-50 border-yellow-50">
             {Object.entries(difficultyText).map(([key, text]) => (
-              <SelectItem key={key} value={key}>
+              <SelectItem 
+                key={key} 
+                value={key}
+                className="hover:bg-red-100 focus:bg-red-100 cursor-pointer"
+              >
                 {difficultyEmoji[key as Difficulty]} {text}
               </SelectItem>
             ))}
@@ -130,7 +134,7 @@ const TicTacToe = () => {
       )}
 
       <button
-        className="mt-4 rounded bg-red-700 px-6 py-2 font-bold text-yellow-50 hover:bg-red-800 transition-colors duration-300 shadow-md rounded-md"
+        className="mt-4 bg-red-700 px-6 py-2 font-bold text-yellow-50 hover:bg-red-800 transition-colors duration-300 shadow-md rounded-lg"
         onClick={resetGame}
       >
         開始新遊戲 🎊
