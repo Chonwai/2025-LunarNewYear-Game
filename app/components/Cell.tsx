@@ -15,7 +15,7 @@ const Cell: React.FC<CellProps> = ({ value, onClick }) => {
       }`}
       onClick={onClick}
     >
-      {cellContent && <span className="cell-content">{cellContent}</span>}
+      {cellContent && <span className="scale-125 transform text-5xl">{cellContent}</span>}
     </button>
   )
 }
