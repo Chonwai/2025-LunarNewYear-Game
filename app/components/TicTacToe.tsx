@@ -76,22 +76,6 @@ const TicTacToe = () => {
     }, 250)
   }, [])
 
-  useEffect(() => {
-    if (!isXNext && !gameOver) {
-      const aiMove = getNextMove([...board], difficulty)
-      const timeoutId = setTimeout(() => handleClick(aiMove), 500)
-      return () => clearTimeout(timeoutId)
-    }
-  }, [isXNext, gameOver, board, difficulty, handleClick])
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowHint(false)
-    }, 3000)
-
-    return () => clearTimeout(timer)
-  }, [])
-
   const handleClick = useCallback(
     (index: number) => {
       if (board[index] || gameOver) return
@@ -109,10 +93,37 @@ const TicTacToe = () => {
         }
       } else {
         setIsXNext(!isXNext)
+        if (isXNext) {
+          const aiMove = getNextMove(newBoard, difficulty)
+          setTimeout(() => {
+            const aiBoard = [...newBoard]
+            aiBoard[aiMove] = "O"
+            setBoard(aiBoard)
+
+            const aiResult = checkWinner(aiBoard)
+            if (aiResult) {
+              setGameOver(true)
+              setWinner(aiResult as Winner)
+              if (aiResult !== "draw") {
+                triggerConfetti()
+              }
+            } else {
+              setIsXNext(true)
+            }
+          }, 500)
+        }
       }
     },
-    [board, gameOver, isXNext, triggerConfetti]
+    [board, gameOver, isXNext, difficulty, triggerConfetti]
   )
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowHint(false)
+    }, 3000)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   const resetGame = () => {
     setBoard(Array(9).fill(null))
