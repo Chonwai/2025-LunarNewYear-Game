@@ -8,10 +8,14 @@ const Cell: React.FC<CellProps> = ({ value, onClick }) => {
 
   return (
     <button
-      className="flex h-20 w-20 items-center justify-center rounded-xl bg-red-700/90 text-4xl shadow-md transition-all duration-300 hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+      className={`flex h-20 w-20 items-center justify-center rounded-xl shadow-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 ${
+        value
+          ? "bg-gradient-to-br from-red-500/90 to-red-600/90 hover:from-red-600/90 hover:to-red-700/90"
+          : "bg-red-700/90 hover:bg-red-800"
+      }`}
       onClick={onClick}
     >
-      {cellContent && <span className="cell-content">{cellContent}</span>}
+      {cellContent && <span className="scale-125 transform text-5xl">{cellContent}</span>}
     </button>
   )
 }

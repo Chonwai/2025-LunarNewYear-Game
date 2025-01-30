@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Board from "./Board"
 import { checkWinner, getNextMove } from "../utils/gameLogic"
 import {
@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label"
 import confetti from "canvas-confetti"
 
 type Difficulty = "easy" | "medium" | "hard"
+type Winner = "X" | "O" | "draw" | null
 
 const difficultyEmoji = {
   easy: "🌸 花開富貴",
@@ -31,43 +32,11 @@ const TicTacToe = () => {
   const [board, setBoard] = useState(Array(9).fill(null))
   const [isXNext, setIsXNext] = useState(true)
   const [gameOver, setGameOver] = useState(false)
-  const [winner, setWinner] = useState(null)
+  const [winner, setWinner] = useState<Winner>(null)
   const [difficulty, setDifficulty] = useState<Difficulty>("medium")
+  const [showHint, setShowHint] = useState(true)
 
-  useEffect(() => {
-    if (!isXNext && !gameOver) {
-      const aiMove = getNextMove([...board], difficulty)
-      setTimeout(() => handleClick(aiMove), 500)
-    }
-  }, [isXNext, gameOver, board, difficulty])
-
-  const handleClick = (index: number) => {
-    if (board[index] || gameOver) return
-
-    const newBoard = [...board]
-    newBoard[index] = isXNext ? "X" : "O"
-    setBoard(newBoard)
-
-    const result = checkWinner(newBoard)
-    if (result) {
-      setGameOver(true)
-      setWinner(result as any)
-      if (result !== "draw") {
-        triggerConfetti()
-      }
-    } else {
-      setIsXNext(!isXNext)
-    }
-  }
-
-  const resetGame = () => {
-    setBoard(Array(9).fill(null))
-    setIsXNext(true)
-    setGameOver(false)
-    setWinner(null)
-  }
-
-  const triggerConfetti = () => {
+  const triggerConfetti = useCallback(() => {
     const duration = 5 * 1000
     const animationEnd = Date.now() + duration
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 }
@@ -105,10 +74,73 @@ const TicTacToe = () => {
         })
       )
     }, 250)
+  }, [])
+
+  const handleClick = useCallback(
+    (index: number) => {
+      if (board[index] || gameOver) return
+
+      const newBoard = [...board]
+      newBoard[index] = isXNext ? "X" : "O"
+      setBoard(newBoard)
+
+      const result = checkWinner(newBoard)
+      if (result) {
+        setGameOver(true)
+        setWinner(result as Winner)
+        if (result !== "draw") {
+          triggerConfetti()
+        }
+      } else {
+        setIsXNext(!isXNext)
+        if (isXNext) {
+          const aiMove = getNextMove(newBoard, difficulty)
+          setTimeout(() => {
+            const aiBoard = [...newBoard]
+            aiBoard[aiMove] = "O"
+            setBoard(aiBoard)
+
+            const aiResult = checkWinner(aiBoard)
+            if (aiResult) {
+              setGameOver(true)
+              setWinner(aiResult as Winner)
+              if (aiResult !== "draw") {
+                triggerConfetti()
+              }
+            } else {
+              setIsXNext(true)
+            }
+          }, 500)
+        }
+      }
+    },
+    [board, gameOver, isXNext, difficulty, triggerConfetti]
+  )
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowHint(false)
+    }, 3000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  const resetGame = () => {
+    setBoard(Array(9).fill(null))
+    setIsXNext(true)
+    setGameOver(false)
+    setWinner(null)
   }
 
   return (
     <div className="flex flex-col items-center rounded-2xl bg-yellow-50/90 p-8 shadow-lg backdrop-blur-sm">
+      {showHint && (
+        <div className="mb-6 rounded-xl bg-red-700/95 p-4 text-center text-xl font-bold text-yellow-50 shadow-lg">
+          <p>點擊格子放置紅包 🧧</p>
+          <p>小心別讓蛇🐍連成一線！</p>
+        </div>
+      )}
+
       <div className="mb-6 flex items-center gap-4">
         <Label htmlFor="difficulty" className="font-bold text-red-800">
           難度選擇：
@@ -141,12 +173,23 @@ const TicTacToe = () => {
         </div>
       )}
 
-      <button
-        className="mt-4 rounded-xl bg-red-700 px-6 py-2 font-bold text-yellow-50 shadow-md transition-colors duration-300 hover:bg-red-800"
-        onClick={resetGame}
-      >
-        開始新遊戲 🎊
-      </button>
+      <div className="flex flex-col gap-4">
+        <button
+          className="mt-4 rounded-xl bg-red-700 px-6 py-2 font-bold text-yellow-50 shadow-md transition-colors duration-300 hover:bg-red-800"
+          onClick={resetGame}
+        >
+          開始新遊戲 🎊
+        </button>
+
+        <a
+          href="https://business.travel3exp.xyz/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-xl bg-red-700 px-6 py-2 text-center font-bold text-yellow-50 shadow-md transition-colors duration-300 hover:bg-red-800"
+        >
+          了解更多 Travel 3 🎮
+        </a>
+      </div>
     </div>
   )
 }
